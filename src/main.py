@@ -10,7 +10,7 @@ app.include_router(users.router)
 
 @app.get("/")
 async def root():
-    return {"message": "Test"}
+    return {"message": "Hallo Wereld"}
 
 
 @app.get("/hello/{name}")

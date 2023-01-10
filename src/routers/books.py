@@ -8,7 +8,7 @@ router = APIRouter(
 
 @router.get('/')
 async def get_all_books():
-    return 'All books'
+    return 'All Troll'
 
 
 @router.get('{name}')
