@@ -2,4 +2,4 @@ envs/backend/*
 config/*
 .env
 src/__pycache__/*
-src/routers/__pycache__/*
+src/*/__pycache__/*

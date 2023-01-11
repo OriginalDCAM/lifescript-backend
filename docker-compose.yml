@@ -5,8 +5,8 @@ services:
     ports:
       - 8000:8000
     volumes:
-      - "/home/denzel/projects/LifeScript/backend/src:/code/app"
-      - "/home/denzel/projects/LifeScript/backend/requirements.txt:/code/requirements.txt"
+      - "/home/denzel/projects/LifeScript/backend/src:/backend/src"
+      - "/home/denzel/projects/LifeScript/backend/requirements.txt:/src/requirements.txt"
     environment:
       - WATCHFILES_FORCE_POLLING=true
 
