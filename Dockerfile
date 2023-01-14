@@ -9,6 +9,11 @@ RUN pip install psycopg2-binary
 
 RUN pip install --no-cache-dir --upgrade -r /backend/requirements.txt
 
+COPY ./alembic /backend/alembic
+
+COPY alembic.ini /backend
+
 COPY ./src /backend/src
 
+CMD ["alembic", "upgrade", "head"]
 CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
