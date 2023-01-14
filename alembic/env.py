@@ -3,10 +3,13 @@ from logging.config import fileConfig
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 
+import os
+
 from src.database import Base
 
 from alembic import context
 
+from src.database import SQLALCHEMY_DATABASE_URL
 from src.users.models import User
 from src.books.models import Book
 # this is the Alembic Config object, which provides
@@ -42,7 +45,7 @@ def run_migrations_offline() -> None:
     script output.
 
     """
-    url = config.get_main_option("sqlalchemy.url")
+    url = os.getenv('SQL_ALCHEMY_URL')
     context.configure(
         url=url,
         target_metadata=target_metadata,
