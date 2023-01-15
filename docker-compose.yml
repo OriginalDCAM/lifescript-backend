@@ -3,7 +3,7 @@ services:
   fastapi:
     image: "backend:fastapi"
     ports:
-      - 8000:8000
+      - 80:8000
     volumes:
       - "/home/denzel/projects/LifeScript/backend/src:/backend/src"
       - "/home/denzel/projects/LifeScript/backend/alembic.ini:/backend/alembic.ini"
