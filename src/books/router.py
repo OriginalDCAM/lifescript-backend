@@ -20,3 +20,11 @@ def create_book_for_user(user_id: int, book: schemas.BookCreate, db: Session = D
 def read_books(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     books = crud.get_books(db, skip=skip, limit=limit)
     return books
+
+
+@router.delete("/delete_book/{book_id}")
+def delete_book(book_id: int, db: Session = Depends(get_db)):
+    delete_book = crud.delete_user_book(db=db, book_id=book_id)
+    if delete_book is False:
+        raise HTTPException(status_code=404, detail="Book not found")
+    return {"ok": True}
