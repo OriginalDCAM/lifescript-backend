@@ -14,6 +14,10 @@ def create_user_book(db: Session, book: schemas.BookCreate, user_id: int):
     return db_book
 
 
-def delete_user_book(db: Session, book: schemas.Book):
-    db_book = db.query(models.Book).where(book_id=book)
-    return
+def delete_user_book(db: Session, book_id):
+    book = db.get(models.Book, book_id)
+    if not book:
+        return False
+    db.delete(book)
+    db.commit()
+    return True
