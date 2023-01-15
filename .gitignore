@@ -3,3 +3,5 @@ config/*
 .env
 src/__pycache__/*
 src/*/__pycache__/*
+.vscode/*
+alembic/versions/__pycache__
