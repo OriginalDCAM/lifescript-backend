@@ -1,5 +1,7 @@
 from pydantic import BaseModel
 
+from src.pages.schemas import Page
+
 
 class BookBase(BaseModel):
     title: str
@@ -13,6 +15,7 @@ class BookCreate(BookBase):
 class Book(BookBase):
     id: int
     author_id: int
+    pages: list[Page] = []
 
     class Config:
         orm_mode = True
