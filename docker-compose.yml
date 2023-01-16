@@ -5,9 +5,9 @@ services:
     ports:
       - 80:8000
     volumes:
-      - "/home/denzel/projects/LifeScript/backend/src:/backend/src"
-      - "/home/denzel/projects/LifeScript/backend/alembic.ini:/backend/alembic.ini"
-      - "/home/denzel/projects/LifeScript/backend/requirements.txt:/backend/requirements.txt"
+      - "${PWD}/src:/backend/src"
+      - "${PWD}/alembic.ini:/backend/alembic.ini"
+      - "${PWD}/requirements.txt:/backend/requirements.txt"
     environment:
       - WATCHFILES_FORCE_POLLING=true
     env_file:
