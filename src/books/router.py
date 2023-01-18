@@ -22,6 +22,14 @@ def read_books(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     return books
 
 
+@router.get("/{book_title}", response_model=schemas.Book)
+def read_book(book_title: str, db: Session = Depends(get_db)):
+    book = crud.get_book(db=db, book_title=book_title)
+    if book is None:
+        raise HTTPException(status_code=404, detail="Book not found")
+    return book
+
+
 @router.delete("/delete_book/{book_id}")
 def delete_book(book_id: int, db: Session = Depends(get_db)):
     delete_book = crud.delete_user_book(db=db, book_id=book_id)

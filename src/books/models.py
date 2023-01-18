@@ -12,6 +12,7 @@ class Book(Base):
     description = Column(String)
     date_published = Column(DateTime)
     date_updated = Column(DateTime)
+    is_public = Column(Boolean, default=True)
     author_id = Column(Integer, ForeignKey("users.id"))
 
     author = relationship("User", back_populates="books")
