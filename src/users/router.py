@@ -31,3 +31,5 @@ def reader_user(user_id: int, db: Session = Depends(get_db)):
     if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
     return db_user
+
+# TODO: ADD ROUTES FOR UPDATING A USER, SOFTDELETING A USER
