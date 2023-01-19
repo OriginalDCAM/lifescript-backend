@@ -35,4 +35,4 @@ def delete_book(book_id: int, db: Session = Depends(get_db)):
     delete_book = crud.delete_user_book(db=db, book_id=book_id)
     if delete_book is False:
         raise HTTPException(status_code=404, detail="Book not found")
-    return {"ok": True}
+    return delete_book
