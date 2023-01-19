@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session
+from sqlalchemy import update
 from src.users import models, schemas
 from src.helpers.hashing import Hasher
 
@@ -25,3 +26,19 @@ def create_user(db: Session, user: schemas.UserCreate):
     return db_user
 
 # TODO: ADD FUNCTIONS FOR UPDATING A USER, SOFTDELETING A USER
+
+
+def update_user(db: Session, user_input: schemas.UserUpdate, user_id: int):
+    test = db.execute(update(models.User).where(
+        models.User.id == user_id).values(first_name=user_input.first_name, username=user_input.username, email=user_input.email))
+    user = db.get(models.User, user_id)
+    return user
+
+
+def delete_user(db: Session, user: schemas.User, user_id: int):
+    user = db.get(models.User, user_id)
+    if not user:
+        return False
+    db.delete(user)
+    db.commit()
+    return True

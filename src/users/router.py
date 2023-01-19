@@ -26,10 +26,13 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
 
 
 @router.get("/{user_id}", response_model=schemas.User)
-def reader_user(user_id: int, db: Session = Depends(get_db)):
-    db_user = crud.get_user(db, user_id=user_id)
+def read_user(user_id: int, db: Session = Depends(get_db)):
+    db_user = crud.get_user(db=db, user_id=user_id)
     if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
     return db_user
 
-# TODO: ADD ROUTES FOR UPDATING A USER, SOFTDELETING A USER
+
+@router.put("/{user_id}", response_model=schemas.User)
+def update_user(user_id: int, user_input: schemas.UserUpdate, db: Session = Depends(get_db)):
+    return crud.update_user(db=db, user_input=user_input, user_id=user_id)

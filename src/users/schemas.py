@@ -13,6 +13,10 @@ class UserCreate(UserBase):
     password: str = Field(min_length=8, max_length=32)
 
 
+class UserUpdate(UserBase):
+    pass
+
+
 class User(UserBase):
     id: int
     is_active: bool
