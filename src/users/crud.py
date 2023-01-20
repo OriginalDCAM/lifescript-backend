@@ -42,3 +42,21 @@ def delete_user(db: Session, user: schemas.User, user_id: int):
     db.delete(user)
     db.commit()
     return True
+
+
+def user_login(db: Session, user_input: schemas.UserLogin):
+    user = db.query(models.User).filter(
+        models.User.email == user_input.email).first()
+
+    # Checks if user exists in the database if not return the empty user
+    if user is None:
+        return None
+
+    check_if_passwords_match = Hasher.verify_password(
+        user_input.password, user.hashed_password)
+
+    # Checks if the passwords dont match return none value
+    if not check_if_passwords_match:
+        return None
+
+    return user
