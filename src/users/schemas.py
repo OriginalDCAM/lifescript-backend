@@ -1,4 +1,4 @@
-﻿from pydantic import BaseModel, EmailStr, Field, constr
+﻿from pydantic import BaseModel, EmailStr, ValidationError, validator, Field, constr
 from src.books.schemas import Book
 
 
@@ -15,6 +15,11 @@ class UserCreate(UserBase):
 
 class UserUpdate(UserBase):
     pass
+
+
+class UserLogin(BaseModel):
+    email: EmailStr
+    password: str = Field(min_length=8, max_length=32)
 
 
 class User(UserBase):
