@@ -2,6 +2,7 @@ version: "3"
 services:
   fastapi:
     image: "backend:fastapi"
+    restart: always
     ports:
       - 80:8000
     volumes:
