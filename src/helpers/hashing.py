@@ -1,5 +1,5 @@
 import os
-import datetime
+from datetime import datetime, timedelta
 
 from passlib.context import CryptContext
 from typing import Union, Any
@@ -29,7 +29,7 @@ class Hasher():
             expires_delta = datetime.utcnow() + expires_delta
         else:
             expires_delta = datetime.utcnow(
-            ) + datetime.timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+            ) + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
 
         to_encode = {"exp": expires_delta, "sub": str(subject)}
         encoded_jwt = jwt.encode(to_encode, JWT_SECRET_KEY, ALGORITHM)
