@@ -8,6 +8,9 @@ class UserBase(BaseModel):
                      to_lower=True, strip_whitespace=True)
     email: EmailStr
 
+class UserToken(BaseModel):
+    access_token: str
+    token_type: str
 
 class UserCreate(UserBase):
     password: str = Field(min_length=8, max_length=32)

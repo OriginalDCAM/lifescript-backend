@@ -1,5 +1,6 @@
 ﻿from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
+from src.helpers.hashing import Hasher
 
 from src.users import crud, schemas
 
@@ -33,13 +34,14 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
     return db_user
 
 
-@router.post("/login", response_model=schemas.User)
+@router.post("/login", response_model=schemas.UserToken)
 def login_user(user: schemas.UserLogin, db: Session = Depends(get_db)):
     db_user = crud.user_login(db=db, user_input=user)
     if db_user is None:
         raise HTTPException(
             status_code=404, detail="Username or password not found")
-    return db_user
+    token = Hasher.create_access_token(subject={"sub": db_user.email})
+    return {"access_token": token, "token_type": "bearer"}
 
 
 @router.put("/{user_id}", response_model=schemas.User)
