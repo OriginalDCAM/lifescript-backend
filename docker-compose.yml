@@ -25,6 +25,8 @@ services:
       POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
     ports:
       - 5432:5432
+    volumes:
+    - pgdata:/var/lib/postgresql/data
 
   pgadmin:
     image: dpage/pgadmin4:latest
@@ -36,3 +38,9 @@ services:
       PGADMIN_LISTEN_PORT: "${PGADMIN_LISTEN_PORT}"
     ports:
       - 8080:8080
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+
+volumes:
+  pgdata:
+  pgadmin:
