@@ -39,11 +39,16 @@ def login_user(user: schemas.UserLogin, db: Session = Depends(get_db)):
     db_user = crud.user_login(db=db, user_input=user)
     if db_user is None:
         raise HTTPException(
-            status_code=404, detail="Username or password not found")
-    token = Hasher.create_access_token(subject={"sub": db_user.email})
-    return {"access_token": token, "token_type": "bearer"}
+            status_code=404, detail="Invalid login or password.")
+    token = Hasher.create_access_token(subject=db_user.email)
+    print(db_user)
+    return {"access_token": token, "token_type": "bearer", "first_name": db_user.first_name, "username": db_user.username, "email": db_user.email}
 
 
 @router.put("/{user_id}", response_model=schemas.User)
 def update_user(user_id: int, user_input: schemas.UserUpdate, db: Session = Depends(get_db)):
     return crud.update_user(db=db, user_input=user_input, user_id=user_id)
+
+@router.post("/validate_token", response_model=schemas.User)
+def read_users_me(token: schemas.Token, db: Session = Depends(get_db)):
+    return crud.get_current_user(db=db, token=token)

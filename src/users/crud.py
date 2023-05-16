@@ -1,8 +1,16 @@
+import logging
+from fastapi import Depends, HTTPException, status
+from typing import Optional, Annotated
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from jose import JWTError, jwt
 from sqlalchemy.orm import Session
 from sqlalchemy import update
 from src.users import models, schemas
 from src.helpers.hashing import Hasher
+import os
 
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+ALGORITHM = "HS256"
 
 def get_user(db: Session, user_id: int):
     return db.query(models.User).filter(models.User.id == user_id).first()
@@ -59,4 +67,26 @@ def user_login(db: Session, user_input: schemas.UserLogin):
     if not check_if_passwords_match:
         return None
 
+    return user
+
+def get_current_user(db: Session, token: Annotated[str, Depends(oauth2_scheme)]):
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Could not validate credentials",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+    try:
+        payload = jwt.decode(token.access_token, os.getenv('JWT_SECRET_KEY'), algorithms=[ALGORITHM])
+        email: str = payload.get("sub")
+        if email is None:
+            logging.warning("Email not found")
+            raise credentials_exception
+        token_data = schemas.TokenData(email=email)
+    except JWTError:
+        logging.error("JWT Error")
+        raise credentials_exception
+    user = get_user_by_email(db, email=token_data.email)
+    if user is None:
+        logging.error(f"User not found{token_data.email}")
+        raise credentials_exception
     return user

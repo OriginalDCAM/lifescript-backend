@@ -1,6 +1,13 @@
 ﻿from pydantic import BaseModel, EmailStr, ValidationError, validator, Field, constr
 from src.books.schemas import Book
+from typing import Optional
 
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+class TokenData(BaseModel):
+    email: Optional[str] = None
 
 class UserBase(BaseModel):
     first_name: str = Field(min_length=1, max_length=32)
@@ -8,7 +15,7 @@ class UserBase(BaseModel):
                      to_lower=True, strip_whitespace=True)
     email: EmailStr
 
-class UserToken(BaseModel):
+class UserToken(UserBase):
     access_token: str
     token_type: str
 
