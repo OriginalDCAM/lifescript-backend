@@ -12,6 +12,7 @@ import os
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 ALGORITHM = "HS256"
 
+
 def get_user(db: Session, user_id: int):
     return db.query(models.User).filter(models.User.id == user_id).first()
 
@@ -27,7 +28,7 @@ def get_users(db: Session, skip: int = 0, limit: int = 100):
 def create_user(db: Session, user: schemas.UserCreate):
     hashed_password = Hasher.get_password_hash(user.password)
     db_user = models.User(
-        email=user.email, username=user.username, hashed_password=hashed_password, first_name=user.first_name)
+        email=user.email, username=user.username, hashed_password=hashed_password, first_name=user.first_name, last_name=user.last_name)
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
@@ -38,7 +39,7 @@ def create_user(db: Session, user: schemas.UserCreate):
 
 def update_user(db: Session, user_input: schemas.UserUpdate, user_id: int):
     test = db.execute(update(models.User).where(
-        models.User.id == user_id).values(first_name=user_input.first_name, username=user_input.username, email=user_input.email))
+        models.User.id == user_id).values(first_name=user_input.first_name, last_name=user_input.last_name, username=user_input.username, email=user_input.email))
     user = db.get(models.User, user_id)
     return user
 
@@ -69,6 +70,7 @@ def user_login(db: Session, user_input: schemas.UserLogin):
 
     return user
 
+
 def get_current_user(db: Session, token: Annotated[str, Depends(oauth2_scheme)]):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
@@ -76,7 +78,8 @@ def get_current_user(db: Session, token: Annotated[str, Depends(oauth2_scheme)])
         headers={"WWW-Authenticate": "Bearer"},
     )
     try:
-        payload = jwt.decode(token.access_token, os.getenv('JWT_SECRET_KEY'), algorithms=[ALGORITHM])
+        payload = jwt.decode(token.access_token, os.getenv(
+            'JWT_SECRET_KEY'), algorithms=[ALGORITHM])
         email: str = payload.get("sub")
         if email is None:
             logging.warning("Email not found")
