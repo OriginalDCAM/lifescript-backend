@@ -52,7 +52,7 @@ def create_user(test_db):
     # Make a request to create a user
     for data in PAYLOAD:
         response = client.post("/api/v1/users/", json=data)
-    assert response.status_code == 201
+        assert response.status_code == 201
 
 def test_login_user():
     # Make a request to login a user with an existing email
