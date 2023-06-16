@@ -28,6 +28,16 @@ services:
     volumes:
     - pgdata:/var/lib/postgresql/data
 
+  db-test:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: "${POSTGRES_TEST_DB}"
+      POSTGRES_USER: "${POSTGRES_USER}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
+    ports:
+      - ${POSTGRES_TEST_PORT}:5432
+
   pgadmin:
     image: dpage/pgadmin4:latest
     restart: always

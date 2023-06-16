@@ -11,7 +11,7 @@ router = APIRouter(
 )
 
 
-@router.post("/create_book/{user_id}", response_model=schemas.Book)
+@router.post("/create_book/{user_id}", response_model=schemas.Book, status_code=201)
 def create_book_for_user(user_id: int, book: schemas.BookCreate, db: Session = Depends(get_db)):
     book = crud.create_user_book(db=db, book=book, user_id=user_id)
     return book
