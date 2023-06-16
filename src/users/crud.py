@@ -34,8 +34,6 @@ def create_user(db: Session, user: schemas.UserCreate):
     db.refresh(db_user)
     return db_user
 
-# TODO: ADD FUNCTIONS FOR UPDATING A USER, SOFTDELETING A USER
-
 
 def update_user(db: Session, user_input: schemas.UserUpdate, user_id: int):
     test = db.execute(update(models.User).where(
